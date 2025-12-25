@@ -1,344 +1,765 @@
-import React, { useState } from 'react';
-import { AlertCircle, CheckCircle2, ChevronRight, Hospital, Phone, Mail, MapPin, Calendar, FileText, Users } from 'lucide-react';
-
-export default function LiquorfistelHelper() {
-  const [activeTab, setActiveTab] = useState('situation');
-  const [checkedItems, setCheckedItems] = useState({});
-
-  const toggleCheck = (id) => {
-    setCheckedItems(prev => ({ ...prev, [id]: !prev[id] }));
-  };
-
-  const spezialkliniken = [
-    {
-      name: "Charité Berlin - Klinik für Neurochirurgie",
-      leiter: "Prof. Dr. Peter Vajkoczy",
-      expertise: "Schädelbasis, rezidivierende Liquorfisteln, über 6.000 OPs/Jahr",
-      kontakt: "Tel: +49 30 450 560 002",
-      email: "neurochirurgie@charite.de",
-      besonderheit: "Führende Expertise bei komplexen, therapieresistenten Fällen",
-      prioritaet: "SEHR HOCH"
-    },
-    {
-      name: "Universitätsklinikum Tübingen - Neurochirurgie",
-      leiter: "Prof. Dr. Marcos Tatagiba",
-      expertise: "Weltweite Expertise Schädelbasischirurgie, Liquorfisteln",
-      kontakt: "Tel: +49 7071 29-80442",
-      email: "neurochirurgie@med.uni-tuebingen.de",
-      besonderheit: "Renommiertes Zentrum für Schädelbasis-Operationen",
-      prioritaet: "SEHR HOCH"
-    },
-    {
-      name: "Universitätsklinikum Freiburg - HNO & Neurochirurgie",
-      leiter: "Interdisziplinäres Schädelbasiszentrum",
-      expertise: "Endoskopische Duraplastiken, Liquorfistelverschluss",
-      kontakt: "Tel: +49 761 270-0",
-      email: "info@uniklinik-freiburg.de",
-      besonderheit: "Top 5 Klinikum Deutschland, interdisziplinäres Team",
-      prioritaet: "HOCH"
-    },
-    {
-      name: "Universitätsklinikum Heidelberg - Neurochirurgie",
-      leiter: "Schädelbasischirurgie-Team",
-      expertise: "Neuroonkologie, Schädelbasischirurgie, komplexe Fälle",
-      kontakt: "Tel: +49 6221 56-0",
-      email: "info@med.uni-heidelberg.de",
-      besonderheit: "Exzellente Forschung und Behandlung",
-      prioritaet: "HOCH"
-    }
-  ];
-
-  const naechsteSchritte = [
-    {
-      id: 'step1',
-      titel: 'Medizinische Unterlagen zusammenstellen',
-      details: [
-        'Alle CT/MRT-Bilder auf CD brennen lassen',
-        'Operationsberichte aller 8 OPs sammeln',
-        'Arztbriefe und Befunde chronologisch ordnen',
-        'Aktuelle Symptome dokumentieren (wann tritt Flüssigkeit auf, Menge, Begleiterscheinungen)'
-      ]
-    },
-    {
-      id: 'step2',
-      titel: 'Zweitmeinung bei Spezialklinik einholen',
-      details: [
-        'Charité Berlin als erste Wahl kontaktieren (Prof. Vajkoczy)',
-        'Alternativ: Tübingen (Prof. Tatagiba) - ebenfalls Top-Expertise',
-        'Per Telefon/Email Termin für Zweitmeinungssprechstunde anfragen',
-        'Unterlagen vorher per Post/Upload schicken'
-      ]
-    },
-    {
-      id: 'step3',
-      titel: 'Diagnostik klären',
-      details: [
-        'Fragen: Wurde Beta-2-Transferrin-Test gemacht? (beweist Liquor)',
-        'Wurde Fluorescein-Test durchgeführt? (zeigt genaue Leckstelle)',
-        'Wurde intrakranieller Druck gemessen?',
-        'MR-Myelographie zur Fistel-Lokalisation durchgeführt?'
-      ]
-    },
-    {
-      id: 'step4',
-      titel: 'Ursachenforschung intensivieren',
-      details: [
-        'Erhöhter Hirndruck als Ursache? (kann Rezidive verursachen)',
-        'Adipositas als Risikofaktor? (bei spontanen Fisteln häufig)',
-        'Angeborene Knochendefekte möglich?',
-        'Wurde auf alle 3 Fisteltypen untersucht? (ventral, Divertikel, epidurale Venen)'
-      ]
-    },
-    {
-      id: 'step5',
-      titel: 'Therapieoptionen besprechen',
-      details: [
-        'Warum schlägt aktuelle OP-Technik nicht an?',
-        'Alternative Verschlusstechniken prüfen (Sandwich, Onlay, Underlay)',
-        'Lumbaldrainage nach OP zur Druckentlastung?',
-        'Gestielter nasoseptaler Lappen als stabilere Abdeckung?'
-      ]
-    }
-  ];
-
-  const wichtigeFragen = [
-    "Welche genaue OP-Technik wurde bei den 8 Eingriffen verwendet?",
-    "Wurde der intrakranielle Druck gemessen und behandelt?",
-    "Gibt es Hinweise auf erhöhten Hirndruck (Kopfschmerzen, Übelkeit)?",
-    "Wurde die exakte Lokalisation der Fistel mit Fluorescein bestimmt?",
-    "Wie schnell tritt die Flüssigkeit nach den OPs wieder auf?",
-    "Gibt es Anzeichen einer Meningitis (Fieber, Nackensteifigkeit)?",
-    "Wurde bereits eine Lumbaldrainage postoperativ eingesetzt?"
-  ];
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-4 sm:p-6">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
-          <div className="flex items-start gap-4">
-            <AlertCircle className="w-8 h-8 text-red-500 flex-shrink-0 mt-1" />
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liquorfistel Lösungswege & Spezialisten</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #e0f2fe 0%, #ddd6fe 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: flex;
+            gap: 20px;
+            align-items: start;
+        }
+        
+        .alert-icon {
+            width: 40px;
+            height: 40px;
+            background: #ef4444;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+        
+        h1 {
+            color: #1f2937;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #6b7280;
+            font-size: 16px;
+        }
+        
+        .nav-tabs {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            overflow: hidden;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .nav-tab {
+            flex: 1;
+            min-width: 150px;
+            padding: 20px;
+            background: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            color: #6b7280;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .nav-tab:hover {
+            background: #f9fafb;
+        }
+        
+        .nav-tab.active {
+            background: #4f46e5;
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .info-box {
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid;
+        }
+        
+        .info-box.warning {
+            background: #fef3c7;
+            border-color: #f59e0b;
+            color: #92400e;
+        }
+        
+        .info-box.danger {
+            background: #fee2e2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+        
+        .info-box.info {
+            background: #dbeafe;
+            border-color: #3b82f6;
+            color: #1e40af;
+        }
+        
+        .info-box.success {
+            background: #d1fae5;
+            border-color: #10b981;
+            color: #065f46;
+        }
+        
+        .info-box h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .info-box ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        .info-box li {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        
+        .klinik-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .priority-badge {
+            padding: 5px;
+            text-align: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .priority-high {
+            background: #ef4444;
+        }
+        
+        .priority-medium {
+            background: #f97316;
+        }
+        
+        .klinik-content {
+            padding: 25px;
+        }
+        
+        .klinik-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 20px;
+        }
+        
+        .klinik-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+        
+        .klinik-leiter {
+            color: #4f46e5;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .klinik-icon {
+            width: 40px;
+            height: 40px;
+            background: #e0e7ff;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4f46e5;
+            font-size: 24px;
+        }
+        
+        .klinik-detail {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+            font-size: 14px;
+            color: #4b5563;
+            align-items: start;
+        }
+        
+        .klinik-detail-icon {
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .klinik-highlight {
+            background: #eef2ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-size: 13px;
+            color: #3730a3;
+            font-weight: 500;
+        }
+        
+        .step-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .step-header {
+            display: flex;
+            gap: 15px;
+            align-items: start;
+            margin-bottom: 20px;
+        }
+        
+        .step-number {
+            width: 35px;
+            height: 35px;
+            background: #4f46e5;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        
+        .step-title {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .step-title h3 {
+            font-size: 18px;
+            color: #1f2937;
+        }
+        
+        .checkbox {
+            width: 30px;
+            height: 30px;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .checkbox:hover {
+            background: #f3f4f6;
+        }
+        
+        .checkbox.checked {
+            background: #dcfce7;
+            border-color: #10b981;
+            color: #10b981;
+        }
+        
+        .step-details {
+            margin-left: 50px;
+        }
+        
+        .step-details ul {
+            list-style: none;
+        }
+        
+        .step-details li {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+            font-size: 14px;
+            color: #4b5563;
+        }
+        
+        .arrow-icon {
+            color: #4f46e5;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .timeline-card {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 25px;
+            color: white;
+            margin-top: 20px;
+        }
+        
+        .timeline-card h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .timeline-card p {
+            margin: 8px 0;
+            font-size: 14px;
+        }
+        
+        .question-card {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            transition: all 0.3s;
+            display: flex;
+            gap: 15px;
+            align-items: start;
+        }
+        
+        .question-card:hover {
+            background: #eef2ff;
+        }
+        
+        .question-number {
+            width: 30px;
+            height: 30px;
+            background: #e0e7ff;
+            color: #4f46e5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        
+        .question-text {
+            flex: 1;
+            color: #1f2937;
+            font-size: 14px;
+        }
+        
+        .footer-card {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 30px;
+            color: white;
+            margin-top: 30px;
+        }
+        
+        .footer-card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .footer-card p {
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-tab {
+                min-width: 120px;
+                padding: 15px 10px;
+                font-size: 14px;
+            }
+            
+            h1 {
+                font-size: 22px;
+            }
+            
+            .klinik-header {
+                flex-direction: column;
+            }
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .nav-tabs {
+                display: none;
+            }
+            
+            .tab-content {
+                display: block !important;
+                page-break-before: always;
+            }
+            
+            .checkbox {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="alert-icon">⚠</div>
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-                Liquorfistel-Lösungswege
-              </h1>
-              <p className="text-gray-600">
-                Rezidivierende Flüssigkeitsansammlung nach 8 OPs - Systematischer Plan für spezialisierte Hilfe
-              </p>
+                <h1>Liquorfistel-Lösungswege</h1>
+                <p class="subtitle">Rezidivierende Flüssigkeitsansammlung nach 8 OPs - Systematischer Plan für spezialisierte Hilfe</p>
             </div>
-          </div>
         </div>
 
-        {/* Navigation */}
-        <div className="bg-white rounded-xl shadow-lg mb-6 overflow-hidden">
-          <div className="flex flex-wrap border-b">
-            {[
-              { id: 'situation', label: 'Situation', icon: FileText },
-              { id: 'kliniken', label: 'Spezialkliniken', icon: Hospital },
-              { id: 'schritte', label: 'Nächste Schritte', icon: CheckCircle2 },
-              { id: 'fragen', label: 'Wichtige Fragen', icon: Users }
-            ].map(tab => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex-1 min-w-[140px] px-4 py-4 font-medium transition-colors flex items-center justify-center gap-2 ${
-                  activeTab === tab.id
-                    ? 'bg-indigo-600 text-white'
-                    : 'text-gray-600 hover:bg-gray-50'
-                }`}
-              >
-                <tab.icon className="w-4 h-4" />
-                <span className="text-sm sm:text-base">{tab.label}</span>
-              </button>
-            ))}
-          </div>
+        <!-- Navigation -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('situation')">
+                📋 Situation
+            </button>
+            <button class="nav-tab" onclick="showTab('kliniken')">
+                🏥 Spezialkliniken
+            </button>
+            <button class="nav-tab" onclick="showTab('schritte')">
+                ✓ Nächste Schritte
+            </button>
+            <button class="nav-tab" onclick="showTab('fragen')">
+                💬 Wichtige Fragen
+            </button>
         </div>
 
-        {/* Content */}
-        <div className="space-y-6">
-          {activeTab === 'situation' && (
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <FileText className="w-6 h-6 text-indigo-600" />
-                Medizinische Einschätzung
-              </h2>
-              
-              <div className="space-y-4">
-                <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded">
-                  <h3 className="font-semibold text-yellow-900 mb-2">Diagnose wahrscheinlich:</h3>
-                  <p className="text-yellow-800">
-                    <strong>Rezidivierende Liquorfistel</strong> (Rhinoliquorrhoe oder spontane intrakranielle Hypotension)
-                    - Eine pathologische Verbindung zwischen Liquorraum und Außenwelt, die sich trotz 8 Operationen immer wieder bildet.
-                  </p>
+        <!-- Tab: Situation -->
+        <div id="situation" class="tab-content active">
+            <div class="card">
+                <h2 style="margin-bottom: 20px; color: #1f2937; display: flex; align-items: center; gap: 10px;">
+                    📋 Medizinische Einschätzung
+                </h2>
+                
+                <div class="info-box warning">
+                    <h3>Diagnose wahrscheinlich:</h3>
+                    <p><strong>Rezidivierende Liquorfistel</strong> (Rhinoliquorrhoe oder spontane intrakranielle Hypotension) - Eine pathologische Verbindung zwischen Liquorraum und Außenwelt, die sich trotz 8 Operationen immer wieder bildet.</p>
                 </div>
 
-                <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded">
-                  <h3 className="font-semibold text-red-900 mb-2">Kritische Situation:</h3>
-                  <ul className="text-red-800 space-y-1 text-sm">
-                    <li>• 8 OPs ohne dauerhaften Erfolg → akute Spezialisierung nötig</li>
-                    <li>• Erhöhtes Meningitis-Risiko (5-10% bei Liquorfisteln über 7 Tage)</li>
-                    <li>• Ursache ungeklärt → falsche OP-Technik oder übersehene Grunderkrankung?</li>
-                  </ul>
+                <div class="info-box danger">
+                    <h3>Kritische Situation:</h3>
+                    <ul>
+                        <li>8 OPs ohne dauerhaften Erfolg → akute Spezialisierung nötig</li>
+                        <li>Erhöhtes Meningitis-Risiko (5-10% bei Liquorfisteln über 7 Tage)</li>
+                        <li>Ursache ungeklärt → falsche OP-Technik oder übersehene Grunderkrankung?</li>
+                    </ul>
                 </div>
 
-                <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
-                  <h3 className="font-semibold text-blue-900 mb-2">Mögliche Ursachen bei Rezidiven:</h3>
-                  <ul className="text-blue-800 space-y-1 text-sm">
-                    <li>• <strong>Erhöhter intrakranieller Druck</strong> (drückt Transplantat raus)</li>
-                    <li>• <strong>Falsche Verschlusstechnik</strong> (underlay vs. onlay vs. sandwich)</li>
-                    <li>• <strong>Übersehene zweite Fistelstelle</strong></li>
-                    <li>• <strong>Angeborene Knochendefekte</strong> oder Dura-Schwachstellen</li>
-                    <li>• <strong>Adipositas</strong> (bei spontanen Fisteln Risikofaktor)</li>
-                  </ul>
+                <div class="info-box info">
+                    <h3>Mögliche Ursachen bei Rezidiven:</h3>
+                    <ul>
+                        <li><strong>Erhöhter intrakranieller Druck</strong> (drückt Transplantat raus)</li>
+                        <li><strong>Falsche Verschlusstechnik</strong> (underlay vs. onlay vs. sandwich)</li>
+                        <li><strong>Übersehene zweite Fistelstelle</strong></li>
+                        <li><strong>Angeborene Knochendefekte</strong> oder Dura-Schwachstellen</li>
+                        <li><strong>Adipositas</strong> (bei spontanen Fisteln Risikofaktor)</li>
+                    </ul>
                 </div>
 
-                <div className="bg-green-50 border-l-4 border-green-500 p-4 rounded">
-                  <h3 className="font-semibold text-green-900 mb-2">Gute Nachrichten:</h3>
-                  <ul className="text-green-800 space-y-1 text-sm">
-                    <li>• 98% Heilungsrate bei richtiger Behandlung durch Spezialisten</li>
-                    <li>• Mikrochirurgischer Verschluss kann >90% Heilung erreichen</li>
-                    <li>• Deutschland hat mehrere Weltklasse-Zentren für diesen Fall</li>
-                  </ul>
+                <div class="info-box success">
+                    <h3>Gute Nachrichten:</h3>
+                    <ul>
+                        <li>98% Heilungsrate bei richtiger Behandlung durch Spezialisten</li>
+                        <li>Mikrochirurgischer Verschluss kann >90% Heilung erreichen</li>
+                        <li>Deutschland hat mehrere Weltklasse-Zentren für diesen Fall</li>
+                    </ul>
                 </div>
-              </div>
             </div>
-          )}
+        </div>
 
-          {activeTab === 'kliniken' && (
-            <div className="space-y-4">
-              {spezialkliniken.map((klinik, idx) => (
-                <div key={idx} className="bg-white rounded-xl shadow-lg overflow-hidden">
-                  <div className={`p-1 ${klinik.prioritaet === 'SEHR HOCH' ? 'bg-red-500' : 'bg-orange-500'}`}>
-                    <div className="text-center text-white text-xs font-bold">
-                      PRIORITÄT: {klinik.prioritaet}
+        <!-- Tab: Kliniken -->
+        <div id="kliniken" class="tab-content">
+            <div class="klinik-card">
+                <div class="priority-badge priority-high">PRIORITÄT: SEHR HOCH</div>
+                <div class="klinik-content">
+                    <div class="klinik-header">
+                        <div>
+                            <div class="klinik-title">Charité Berlin - Klinik für Neurochirurgie</div>
+                            <div class="klinik-leiter">Prof. Dr. Peter Vajkoczy</div>
+                        </div>
+                        <div class="klinik-icon">🏥</div>
                     </div>
-                  </div>
-                  <div className="p-6">
-                    <div className="flex items-start justify-between mb-4">
-                      <div>
-                        <h3 className="text-lg font-bold text-gray-900">{klinik.name}</h3>
-                        <p className="text-sm text-indigo-600 font-medium">{klinik.leiter}</p>
-                      </div>
-                      <Hospital className="w-8 h-8 text-indigo-600 flex-shrink-0" />
+                    <div class="klinik-detail">
+                        <span class="klinik-detail-icon">✓</span>
+                        <span><strong>Expertise:</strong> Schädelbasis, rezidivierende Liquorfisteln, über 6.000 OPs/Jahr</span>
                     </div>
-                    
-                    <div className="space-y-3 text-sm">
-                      <div className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700"><strong>Expertise:</strong> {klinik.expertise}</span>
-                      </div>
-                      
-                      <div className="flex items-start gap-2">
-                        <Phone className="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700">{klinik.kontakt}</span>
-                      </div>
-                      
-                      <div className="flex items-start gap-2">
-                        <Mail className="w-4 h-4 text-purple-500 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700">{klinik.email}</span>
-                      </div>
-                      
-                      <div className="bg-indigo-50 p-3 rounded-lg mt-3">
-                        <p className="text-indigo-900 text-xs font-medium">{klinik.besonderheit}</p>
-                      </div>
+                    <div class="klinik-detail">
+                        <span class="klinik-detail-icon">📞</span>
+                        <span>Tel: +49 30 450 560 002</span>
                     </div>
-                  </div>
+                    <div class="klinik-detail">
+                        <span class="klinik-detail-icon">✉</span>
+                        <span>neurochirurgie@charite.de</span>
+                    </div>
+                    <div class="klinik-highlight">
+                        Führende Expertise bei komplexen, therapieresistenten Fällen
+                    </div>
                 </div>
-              ))}
             </div>
-          )}
 
-          {activeTab === 'schritte' && (
-            <div className="space-y-4">
-              {naechsteSchritte.map((schritt, idx) => (
-                <div key={schritt.id} className="bg-white rounded-xl shadow-lg p-6">
-                  <div className="flex items-start gap-3 mb-4">
-                    <div className="flex-shrink-0 w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">
-                      {idx + 1}
+            <div class="klinik-card">
+                <div class="priority-badge priority-high">PRIORITÄT: SEHR HOCH</div>
+                <div class="klinik-content">
+                    <div class="klinik-header">
+                        <div>
+                            <div class="klinik-title">Universitätsklinikum Tübingen - Neurochirurgie</div>
+                            <div class="klinik-leiter">Prof. Dr. Marcos Tatagiba</div>
+                        </div>
+                        <div class="klinik-icon">🏥</div>
                     </div>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-3">
-                        <h3 className="text-lg font-bold text-gray-900">{schritt.titel}</h3>
-                        <button
-                          onClick={() => toggleCheck(schritt.id)}
-                          className={`p-2 rounded-lg transition-colors ${
-                            checkedItems[schritt.id]
-                              ? 'bg-green-100 text-green-600'
-                              : 'bg-gray-100 text-gray-400 hover:bg-gray-200'
-                          }`}
-                        >
-                          <CheckCircle2 className="w-5 h-5" />
-                        </button>
-                      </div>
-                      <ul className="space-y-2">
-                        {schritt.details.map((detail, i) => (
-                          <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
-                            <ChevronRight className="w-4 h-4 text-indigo-500 flex-shrink-0 mt-0.5" />
-                            <span>{detail}</span>
-                          </li>
-                        ))}
-                      </ul>
+                    <div class="klinik-detail">
+                        <span class="klinik-detail-icon">✓</span>
+                        <span><strong>Expertise:</strong> Weltweite Expertise Schädelbasischirurgie, Liquorfisteln</span>
                     </div>
-                  </div>
+                    <div class="klinik-detail">
+                        <span class="klinik-detail-icon">📞</span>
+                        <span>Tel: +49 7071 29-80442</span>
+                    </div>
+                    <div class="klinik-detail">
+                        <span class="klinik-detail-icon">✉</span>
+                        <span>neurochirurgie@med.uni-tuebingen.de</span>
+                    </div>
+                    <div class="klinik-highlight">
+                        Renommiertes Zentrum für Schädelbasis-Operationen
+                    </div>
                 </div>
-              ))}
-
-              <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-xl shadow-lg p-6 text-white">
-                <h3 className="text-lg font-bold mb-2 flex items-center gap-2">
-                  <Calendar className="w-5 h-5" />
-                  Zeitplan
-                </h3>
-                <div className="space-y-2 text-sm">
-                  <p><strong>Diese Woche:</strong> Unterlagen zusammenstellen, Charité/Tübingen kontaktieren</p>
-                  <p><strong>Nächste 1-2 Wochen:</strong> Zweitmeinungstermin vereinbaren</p>
-                  <p><strong>Innerhalb 4 Wochen:</strong> Bei Spezialklinik vorstellen und neue Behandlungsstrategie festlegen</p>
-                </div>
-              </div>
             </div>
-          )}
 
-          {activeTab === 'fragen' && (
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <Users className="w-6 h-6 text-indigo-600" />
-                Wichtige Fragen für Ärztegespräche
-              </h2>
-              
-              <p className="text-gray-600 mb-6 text-sm">
-                Diese Fragen helfen, die bisherige Behandlung zu verstehen und neue Ansätze zu finden:
-              </p>
-              
-              <div className="space-y-3">
-                {wichtigeFragen.map((frage, idx) => (
-                  <div key={idx} className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg hover:bg-indigo-50 transition-colors">
-                    <div className="flex-shrink-0 w-6 h-6 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-sm font-bold">
-                      {idx + 1}
+            <div class="klinik-card">
+                <div class="priority-badge priority-medium">PRIORITÄT: HOCH</div>
+                <div class="klinik-content">
+                    <div class="klinik-header">
+                        <div>
+                            <div class="klinik-title">Universitätsklinikum Freiburg - HNO & Neurochirurgie</div>
+                            <div class="klinik-leiter">Interdisziplinäres Schädelbasiszentrum</div>
+                        </div>
+                        <div class="klinik-icon">🏥</div>
                     </div>
-                    <p className="text-gray-800 text-sm">{frage}</p>
-                  </div>
-                ))}
-              </div>
+                    <div class="klinik-detail">
+                        <span class="klinik-detail-icon">✓</span>
+                        <span><strong>Expertise:</strong> Endoskopische Duraplastiken, Liquorfistelverschluss</span>
+                    </div>
+                    <div class="klinik-detail">
+                        <span class="klinik-detail-icon">📞</span>
+                        <span>Tel: +49 761 270-0</span>
+                    </div>
+                    <div class="klinik-detail">
+                        <span class="klinik-detail-icon">✉</span>
+                        <span>info@uniklinik-freiburg.de</span>
+                    </div>
+                    <div class="klinik-highlight">
+                        Top 5 Klinikum Deutschland, interdisziplinäres Team
+                    </div>
+                </div>
+            </div>
 
-              <div className="mt-6 bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
-                <p className="text-blue-900 text-sm">
-                  <strong>Tipp:</strong> Diese Fragen ausdrucken und zum Arzttermin mitnehmen. Notizen zu den Antworten helfen bei der Zweitmeinung.
+            <div class="klinik-card">
+                <div class="priority-badge priority-medium">PRIORITÄT: HOCH</div>
+                <div class="klinik-content">
+                    <div class="klinik-header">
+                        <div>
+                            <div class="klinik-title">Universitätsklinikum Heidelberg - Neurochirurgie</div>
+                            <div class="klinik-leiter">Schädelbasischirurgie-Team</div>
+                        </div>
+                        <div class="klinik-icon">🏥</div>
+                    </div>
+                    <div class="klinik-detail">
+                        <span class="klinik-detail-icon">✓</span>
+                        <span><strong>Expertise:</strong> Neuroonkologie, Schädelbasischirurgie, komplexe Fälle</span>
+                    </div>
+                    <div class="klinik-detail">
+                        <span class="klinik-detail-icon">📞</span>
+                        <span>Tel: +49 6221 56-0</span>
+                    </div>
+                    <div class="klinik-detail">
+                        <span class="klinik-detail-icon">✉</span>
+                        <span>info@med.uni-heidelberg.de</span>
+                    </div>
+                    <div class="klinik-highlight">
+                        Exzellente Forschung und Behandlung
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Schritte -->
+        <div id="schritte" class="tab-content">
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <div class="step-title">
+                        <h3>Medizinische Unterlagen zusammenstellen</h3>
+                        <div class="checkbox" onclick="toggleCheck(this)"></div>
+                    </div>
+                </div>
+                <div class="step-details">
+                    <ul>
+                        <li><span class="arrow-icon">→</span> Alle CT/MRT-Bilder auf CD brennen lassen</li>
+                        <li><span class="arrow-icon">→</span> Operationsberichte aller 8 OPs sammeln</li>
+                        <li><span class="arrow-icon">→</span> Arztbriefe und Befunde chronologisch ordnen</li>
+                        <li><span class="arrow-icon">→</span> Aktuelle Symptome dokumentieren (wann tritt Flüssigkeit auf, Menge, Begleiterscheinungen)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <div class="step-title">
+                        <h3>Zweitmeinung bei Spezialklinik einholen</h3>
+                        <div class="checkbox" onclick="toggleCheck(this)"></div>
+                    </div>
+                </div>
+                <div class="step-details">
+                    <ul>
+                        <li><span class="arrow-icon">→</span> Charité Berlin als erste Wahl kontaktieren (Prof. Vajkoczy)</li>
+                        <li><span class="arrow-icon">→</span> Alternativ: Tübingen (Prof. Tatagiba) - ebenfalls Top-Expertise</li>
+                        <li><span class="arrow-icon">→</span> Per Telefon/Email Termin für Zweitmeinungssprechstunde anfragen</li>
+                        <li><span class="arrow-icon">→</span> Unterlagen vorher per Post/Upload schicken</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <div class="step-title">
+                        <h3>Diagnostik klären</h3>
+                        <div class="checkbox" onclick="toggleCheck(this)"></div>
+                    </div>
+                </div>
+                <div class="step-details">
+                    <ul>
+                        <li><span class="arrow-icon">→</span> Fragen: Wurde Beta-2-Transferrin-Test gemacht? (beweist Liquor)</li>
+                        <li><span class="arrow-icon">→</span> Wurde Fluorescein-Test durchgeführt? (zeigt genaue Leckstelle)</li>
+                        <li><span class="arrow-icon">→</span> Wurde intrakranieller Druck gemessen?</li>
+                        <li><span class="arrow-icon">→</span> MR-Myelographie zur Fistel-Lokalisation durchgeführt?</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">4</div>
+                    <div class="step-title">
+                        <h3>Ursachenforschung intensivieren</h3>
+                        <div class="checkbox" onclick="toggleCheck(this)"></div>
+                    </div>
+                </div>
+                <div class="step-details">
+                    <ul>
+                        <li><span class="arrow-icon">→</span> Erhöhter Hirndruck als Ursache? (kann Rezidive verursachen)</li>
+                        <li><span class="arrow-icon">→</span> Adipositas als Risikofaktor? (bei spontanen Fisteln häufig)</li>
+                        <li><span class="arrow-icon">→</span> Angeborene Knochendefekte möglich?</li>
+                        <li><span class="arrow-icon">→</span> Wurde auf alle 3 Fisteltypen untersucht? (ventral, Divertikel, epidurale Venen)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">5</div>
+                    <div class="step-title">
+                        <h3>Therapieoptionen besprechen</h3>
+                        <div class="checkbox" onclick="toggleCheck(this)"></div>
+                    </div>
+                </div>
+                <div class="step-details">
+                    <ul>
+                        <li><span class="arrow-icon">→</span> Warum schlägt aktuelle OP-Technik nicht an?</li>
+                        <li><span class="arrow-icon">→</span> Alternative Verschlusstechniken prüfen (Sandwich, Onlay, Underlay)</li>
+                        <li><span class="arrow-icon">→</span> Lumbaldrainage nach OP zur Druckentlastung?</li>
+                        <li><span class="arrow-icon">→</span> Gestielter nasoseptaler Lappen als stabilere Abdeckung?</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-card">
+                <h3>📅 Zeitplan</h3>
+                <p><strong>Diese Woche:</strong> Unterlagen zusammenstellen, Charité/Tübingen kontaktieren</p>
+                <p><strong>Nächste 1-2 Wochen:</strong> Zweitmeinungstermin vereinbaren</p>
+                <p><strong>Innerhalb 4 Wochen:</strong> Bei Spezialklinik vorstellen und neue Behandlungsstrategie festlegen</p>
+            </div>
+        </div>
+
+        <!-- Tab: Fragen -->
+        <div id="fragen" class="tab-content">
+            <div class="card">
+                <h2 style="margin-bottom: 10px; color: #1f2937; display: flex; align-items: center; gap: 10px;">
+                    💬 Wichtige Fragen für Ärztegespräche
+                </h2>
+                
+                <p style="color: #6b7280; margin-bottom: 25px; font-size: 14px;">
+                    Diese Fragen helfen, die bisherige Behandlung zu verstehen und neue Ansätze zu finden:
                 </p>
-              </div>
-            </div>
-          )}
-        </div>
+                
+                <div class="question-card">
+                    <div class="question-number">1</div>
+                    <div class="question-text">Welche genaue OP-Technik wurde bei den 8 Eingriffen verwendet?</div>
+                </div>
 
-        {/* Footer */}
-        <div className="mt-6 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow-lg p-6 text-white">
-          <h3 className="text-lg font-bold mb-2">Wichtigste Empfehlung:</h3>
-          <p className="text-sm leading-relaxed">
-            Nach 8 erfolglosen OPs ist eine <strong>Zweitmeinung bei einem spezialisierten Zentrum DRINGEND erforderlich</strong>. 
-            Die Charité Berlin (Prof. Vajkoczy) oder Tübingen (Prof. Tatagiba) sind die ersten Anlaufstellen. 
-            Diese Kliniken behandeln täglich solche komplexen Fälle und haben Zugang zu modernsten Diagnoseverfahren und OP-Techniken, 
-            die in regionalen Kliniken möglicherweise nicht verfügbar sind.
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
+                <div class="question-card">
+                    <div class="question-number">2</div>
+                    <div class="question-text">Wurde der intrakranielle Druck gemessen und behandelt?</div>
+                </div>
+
+                <div class="question-card">
+                    <div class="question-number">3</div>
+                    <div class="question-text">Gibt es Hinweise auf erhöhten Hirndruck (Kopfschmerzen, Übelkeit)?</div>
+                </div>
+
+                <div class="question-card">
+                    <div class="question-number">4</div>
+                    <div class="question-text">Wurde die exakte Lokalisation der Fistel mit Fluorescein bestimmt?</div>
+                </div>
+
+                <div class="question-card">
+                    <div class="question-number">5</div>
+                    <div class="question-text">Wie schnell tritt die Flüssigkeit nach den OPs wieder auf?</div>
+                </div>
+
+                <div class="question-card">
+                    <div class="question-number">6</div>
+                    <div class="question-text">Gibt es Anzeichen einer Meningitis (Fieber, Nackensteifigkeit)?</div>
+                </div>
